@@ -1,5 +1,3 @@
-import { computerRandom } from "./computer.js";
-
 export function checkingScore (computerInputNumber, userInputNumbers) {
     let strike = 0;
     let ball = 0

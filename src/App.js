@@ -4,21 +4,17 @@ import { computerRandom } from "./Domain/computer.js";
 import { checkingScore, playGame } from "./Domain/score.js";
 
 
-
 class App {
-  isReStart = true
-
   async play() {
-
-    MissionUtils.Console.print('숫자 야구 게임을 시작합니다.');
     let willBeRestarted = true
+    MissionUtils.Console.print('숫자 야구 게임을 시작합니다.');
     while (willBeRestarted) {
+      const computerInputNumber = computerRandom()
 
       let userWillRetry = true;
-      let computerInputNumber = computerRandom()
       while (userWillRetry) {
-
-        const userNumberInput = await MissionUtils.Console.readLineAsync("숫자를 입력해주세요 : ")
+        const userNumberInput = await MissionUtils.Console.readLineAsync("숫자를 입력해주세요 : ").then((value) => value)
+       
         // validation
         try {
           Validation.gameInputValidation(userNumberInput);
@@ -32,7 +28,6 @@ class App {
 
         const {strike, ball} = checkingScore(computerInputNumber, arrayOfInput);
         playGame(strike,ball)
-        console.log()
 
         // 스트라이크 갯수 체크해야함
         if (strike === 3) {
@@ -44,8 +39,9 @@ class App {
     }
   }
   
-  async isUserWillingToRestart(prefixMessage = "") {
-    let restart = await MissionUtils.Console.readLineAsync(`${prefixMessage} 게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.`);
+  async isUserWillingToRestart() {
+    let restart = await MissionUtils.Console.readLineAsync('게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.')
+    .then((value) => value);
     if (restart === "1") {
       MissionUtils.Console.print("1번을 눌렀습니다. 게임을 재시작합니다.");
       return true;
@@ -59,8 +55,5 @@ class App {
 
 }
 
-
-const app = new App();
-app.play();
 
 export default App;
